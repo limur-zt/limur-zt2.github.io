@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Первые 15 минут — интерактивный тренажёр цифровой безопасности для студентов 1–2 курсов ИБ.">
+<title>Первые 15 минут — тренажёр ИБ</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#647089;--line:#dfe5ef;--accent:#315efb;--accent2:#173ea8;--good:#16835b;--goodbg:#e9f8f1;--bad:#b54747;--badbg:#fff0f0;--warn:#9a6700;--warnbg:#fff7df;--shadow:0 12px 35px rgba(22,34,66,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit}.wrap{max-width:980px;margin:auto;padding:28px 18px 50px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}.brand{font-weight:800;letter-spacing:-.02em}.brand span{color:var(--accent)}
+.timer{font-variant-numeric:tabular-nums;background:#eef2ff;color:var(--accent2);padding:8px 12px;border-radius:999px;font-weight:700}
+.hero{background:linear-gradient(135deg,#16264b,#315efb);color:#fff;border-radius:24px;padding:42px 38px;box-shadow:var(--shadow);margin-bottom:22px}
+.hero h1{font-size:clamp(34px,6vw,60px);line-height:1;margin:0 0 14px;letter-spacing:-.045em}.hero p{max-width:720px;color:#e7edff;font-size:18px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.btn{border:0;border-radius:12px;padding:13px 18px;cursor:pointer;font-weight:750;min-height:46px}.primary{background:#fff;color:#193b9e}.secondary{background:#e9eeff;color:#193b9e}.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 6px 22px rgba(22,34,66,.04)}.card h3{margin:0 0 5px}.muted{color:var(--muted)}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#eef2f7;color:#536075;font-size:13px;font-weight:700;margin-bottom:10px}
+.screen{display:none}.screen.active{display:block}.progress{height:8px;background:#e4e9f2;border-radius:99px;overflow:hidden;margin:0 0 20px}.progress i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:15px;color:var(--muted);font-size:14px}.incident{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px}.message{background:#f7f9fc;border-left:4px solid var(--accent);padding:18px;border-radius:10px;margin:16px 0}.choices{display:grid;gap:11px}.choice{width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 16px;cursor:pointer;transition:.15s}.choice:hover,.choice:focus{border-color:var(--accent);outline:3px solid #dfe6ff}.choice strong{display:block;margin-bottom:3px}.feedback{margin-top:18px;border-radius:15px;padding:18px}.good{background:var(--goodbg);border:1px solid #bfe9d6}.bad{background:var(--badbg);border:1px solid #f0c7c7}.warn{background:var(--warnbg);border:1px solid #eedb9e}.feedback h3{margin:0 0 6px}.hidden{display:none!important}.checks{display:grid;gap:9px;margin:12px 0}.check{display:flex;gap:10px;align-items:flex-start}.check input{margin-top:5px;width:18px;height:18px}.tip{background:#f7f9fc;border:1px solid var(--line);padding:16px;border-radius:14px;margin-top:14px}.score{font-size:46px;font-weight:850;letter-spacing:-.04em}.resultbox{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.rule{font-size:25px;font-weight:800;padding:18px 20px;background:#eef2ff;border-radius:16px;color:#193b9e;margin:18px 0}.small{font-size:13px}.footer{margin-top:26px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.hero{padding:30px 22px}.wrap{padding:18px 12px 40px}.incident{padding:18px}.top{align-items:flex-start}.timer{font-size:14px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <div class="brand">ПЕРВЫЕ <span>15 МИНУТ</span></div>
+    <div class="timer" id="timer">15:00</div>
+  </div>
+
+  <section id="home" class="screen active">
+    <div class="hero">
+      <div class="pill">Интерактивный тренажёр ИБ · 1–2 курс</div>
+      <h1>Не спеши нажимать.</h1>
+      <p>Разбери четыре реалистичные цифровые ситуации и потренируйся принимать безопасные решения: от фишинга и социальной инженерии до компрометации аккаунта и цифрового этикета.</p>
+      <div class="actions">
+        <button class="btn primary" id="startBtn">Начать тренировку</button>
+        <button class="btn secondary" id="howBtn">Как это работает</button>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="pill">01 · Фишинг</div><h3>«Письмо из деканата»</h3><p class="muted">Научись замечать срочность, угрозы и подозрительные ссылки.</p></div>
+      <div class="card"><div class="pill">02 · Социнженерия</div><h3>«Код из SMS»</h3><p class="muted">Проверь, как реагировать на просьбу передать код подтверждения.</p></div>
+      <div class="card"><div class="pill">03 · Аккаунт</div><h3>«Неизвестный вход»</h3><p class="muted">Выбери первичные действия при подозрении на компрометацию.</p></div>
+      <div class="card"><div class="pill">04 · Этика</div><h3>«Фото в чате»</h3><p class="muted">Разберись с согласием, личными границами и распространением контента.</p></div>
+    </div>
+    <div id="how" class="tip hidden"><strong>Механика:</strong> в каждом эпизоде прочитай ситуацию, выбери действие, получи разбор и переходи дальше. Ошибка не наказывается — её задача показать безопасный алгоритм.</div>
+  </section>
+
+  <section id="quiz" class="screen">
+    <div class="progress"><i id="bar" style="width:25%"></i></div>
+    <div class="meta"><span id="counter">Инцидент 1 из 4</span><span id="topic"></span></div>
+    <div class="incident">
+      <h2 id="title"></h2>
+      <p id="context" class="muted"></p>
+      <div class="message" id="message"></div>
+      <div class="tip"><strong>Задание:</strong> <span id="task"></span></div>
+    </div>
+    <div id="choices" class="choices"></div>
+    <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn primary hidden" id="nextBtn">Следующий инцидент</button>
+      <button class="btn ghost" id="homeBtn">Выйти в меню</button>
+    </div>
+  </section>
+
+  <section id="result" class="screen">
+    <div class="hero">
+      <div class="pill">Тренировка завершена</div>
+      <h1>Разбор закончен.</h1>
+      <p>Теперь у тебя есть базовый алгоритм для типичных ситуаций цифровой безопасности.</p>
+    </div>
+    <div class="card resultbox">
+      <div><div class="muted">Результат</div><div class="score" id="score">0/4</div></div>
+      <div><strong id="summary"></strong><p class="muted" id="summaryText"></p></div>
+    </div>
+    <div class="rule">СТОП → ПРОВЕРЬ → ДЕЙСТВУЙ</div>
+    <div class="grid">
+      <div class="card"><h3>СТОП</h3><p class="muted">Не переходи по ссылке, не передавай код и не выполняй срочную просьбу автоматически.</p></div>
+      <div class="card"><h3>ПРОВЕРЬ</h3><p class="muted">Проверь отправителя, ссылку и запрос через независимый официальный канал.</p></div>
+      <div class="card"><h3>ДЕЙСТВУЙ</h3><p class="muted">Если риск подтверждается — прекрати взаимодействие, сохрани сведения и сообщи ответственному.</p></div>
+      <div class="card"><h3>УВАЖАЙ</h3><p class="muted">Не распространяй чужие данные и контент без основания, не поддерживай травлю, учитывай авторство.</p></div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>Чек-лист перед отправкой</h3>
+      <div class="checks">
+        <label class="check"><input type="checkbox"> Я проверяю источник, а не только имя отправителя.</label>
+        <label class="check"><input type="checkbox"> Я не передаю пароли и коды подтверждения.</label>
+        <label class="check"><input type="checkbox"> Я проверяю важные просьбы через независимый канал.</label>
+        <label class="check"><input type="checkbox"> Я не распространяю чужие фото и данные без разрешения.</label>
+        <label class="check"><input type="checkbox"> Я не делюсь непроверенной информацией.</label>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="restartBtn">Пройти ещё раз</button>
+    </div>
+  </section>
+  <div class="footer">Учебный симулятор. Все персонажи, сообщения, ссылки и ситуации вымышлены.</div>
+</main>
+
+<script>
+(() => {
+  const scenarios = [
+    {
+      topic:"Фишинг", title:"Письмо из деканата",
+      context:"09:42. На университетскую почту приходит сообщение о якобы обнаруженной подозрительной активности.",
+      message:"«Ваш аккаунт будет заблокирован через 10 минут. Для подтверждения личности перейдите по ссылке: university-security-check.example»",
+      task:"Что сделаешь первым?",
+      choices:[
+        ["Перейду по ссылке и введу данные.","Слишком быстрое действие. Поддельная страница может запросить учётные данные."],
+        ["Самостоятельно открою официальный сайт университета и проверю уведомление через официальный канал.","Это безопасный алгоритм: не использовать ссылку из подозрительного сообщения, а проверять информацию независимо."],
+        ["Перешлю письмо друзьям и попрошу их перейти по ссылке.","Так можно распространить фишинговую ссылку на других людей."]
+      ], correct:1
+    },
+    {
+      topic:"Социальная инженерия", title:"Код из SMS",
+      context:"В мессенджере тебе пишет знакомый контакт. Сообщение выглядит срочным.",
+      message:"«Привет! Я восстанавливаю аккаунт и случайно указал твой номер. Мне сейчас придёт код — просто перешли его мне, пожалуйста!»",
+      task:"Как поступить?",
+      choices:[
+        ["Переслать код: человек ведь знакомый.","Код подтверждает действие, связанное с аккаунтом. Передавать его другому человеку нельзя."],
+        ["Отправить код, но сначала спросить, зачем он нужен.","Объяснение не делает передачу кода безопасной. Проверять нужно независимо, а код не передавать."],
+        ["Не передавать код и проверить ситуацию другим способом.","Верно: код не передаётся, а личность и обстоятельства проверяются через независимый канал."]
+      ], correct:2
+    },
+    {
+      topic:"Компрометация аккаунта", title:"Неизвестный вход",
+      context:"В настройках аккаунта появляется уведомление: «Новый вход с неизвестного устройства». Ты этот вход не совершал.",
+      message:"Устройство: Windows · Время: 08:17 · Место: неизвестно",
+      task:"Какой набор действий наиболее безопасен?",
+      choices:[
+        ["Ничего не делать: возможно, это ошибка.","Игнорирование может оставить постороннему доступ."],
+        ["Сменить пароль, завершить неизвестные сессии, включить дополнительную защиту и проверить способы восстановления аккаунта.","Это базовый порядок первичного реагирования: прекратить подозрительный доступ и усилить защиту."],
+        ["Написать владельцу неизвестного устройства.","Не стоит вступать в контакт с предполагаемым злоумышленником. Сначала защищают аккаунт."]
+      ], correct:1
+    },
+    {
+      topic:"Цифровой этикет", title:"Фото в общем чате",
+      context:"После занятия у тебя есть смешная фотография одногруппника. Ты хочешь отправить её в большой общий чат.",
+      message:"На фото хорошо виден человек, а согласия на публикацию он не давал.",
+      task:"Что учитываешь перед публикацией?",
+      choices:[
+        ["Ничего: фотография уже сделана, значит её можно публиковать.","Сам факт наличия фотографии не означает, что публикация в любой аудитории уместна."],
+        ["Сначала спрошу согласие человека и не буду публиковать, если он против.","Это учитывает личные границы и контекст распространения изображения."],
+        ["Отправлю, но удалю через несколько минут.","Временная публикация всё равно распространяет изображение без согласия."]
+      ], correct:1
+    }
+  ];
+
+  const $ = id => document.getElementById(id);
+  let index=0, score=0, answered=false, seconds=900, timerId=null;
+
+  function show(id){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    $(id).classList.add("active");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function formatTime(s){
+    const m=Math.floor(s/60).toString().padStart(2,"0"), sec=(s%60).toString().padStart(2,"0");
+    return m+":"+sec;
+  }
+  function startTimer(){
+    clearInterval(timerId); seconds=900; $("timer").textContent=formatTime(seconds);
+    timerId=setInterval(()=>{seconds=Math.max(0,seconds-1);$("timer").textContent=formatTime(seconds); if(seconds===0) clearInterval(timerId)},1000);
+  }
+  function render(){
+    const s=scenarios[index]; answered=false;
+    $("counter").textContent=`Инцидент ${index+1} из ${scenarios.length}`;
+    $("topic").textContent=s.topic;
+    $("title").textContent=s.title; $("context").textContent=s.context;
+    $("message").textContent=s.message; $("task").textContent=s.task;
+    $("bar").style.width=((index+1)/scenarios.length*100)+"%";
+    $("feedback").className="feedback hidden"; $("feedback").innerHTML="";
+    $("nextBtn").classList.add("hidden");
+    const c=$("choices"); c.innerHTML="";
+    s.choices.forEach((item,i)=>{
+      const b=document.createElement("button"); b.className="choice"; b.type="button";
+      b.innerHTML=`<strong>${String.fromCharCode(65+i)}. ${item[0]}</strong><span class="muted">${item[1]}</span>`;
+      b.addEventListener("click",()=>answer(i)); c.appendChild(b);
+    });
+  }
+  function answer(i){
+    if(answered)return; answered=true;
+    const s=scenarios[index], ok=i===s.correct;
+    if(ok)score++;
+    document.querySelectorAll(".choice").forEach((b,n)=>{b.disabled=true; if(n===s.correct)b.style.borderColor="var(--good)"});
+    const f=$("feedback"); f.className="feedback "+(ok?"good":"warn");
+    f.innerHTML=`<h3>${ok?"✓ Безопасное решение":"△ Разбор решения"}</h3><p>${s.choices[i][1]}</p><p><strong>${ok?"Запомни:":"Безопаснее было бы:"}</strong> ${s.choices[s.correct][0]}</p>`;
+    $("nextBtn").textContent=index===scenarios.length-1?"Посмотреть результат":"Следующий инцидент";
+    $("nextBtn").classList.remove("hidden");
+  }
+  function finish(){
+    clearInterval(timerId); $("score").textContent=score+"/4";
+    const summaries=["Начало положено. Повтори сценарии и обрати внимание на независимую проверку.","Ты уже замечаешь ключевые риски. Повтори сценарии, чтобы закрепить алгоритм.","Хороший результат: основные правила уже узнаваемы в ситуациях.","Ты уверенно прошёл все четыре учебных эпизода."];
+    const pos=Math.min(3,Math.max(0,score-1)); $("summary").textContent=summaries[pos];
+    $("summaryText").textContent=`Правильных решений: ${score} из 4. Результат — повод закрепить конкретные алгоритмы, а не оценка профессиональной подготовки.`;
+    show("result");
+  }
+  $("startBtn").addEventListener("click",()=>{index=0;score=0;startTimer();render();show("quiz")});
+  $("howBtn").addEventListener("click",()=>$("how").classList.toggle("hidden"));
+  $("homeBtn").addEventListener("click",()=>{clearInterval(timerId);show("home")});
+  $("nextBtn").addEventListener("click",()=>{if(index<scenarios.length-1){index++;render()}else finish()});
+  $("restartBtn").addEventListener("click",()=>{index=0;score=0;startTimer();render();show("quiz")});
+})();
+</script>
+</body>
+</html>
